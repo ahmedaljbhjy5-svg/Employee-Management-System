@@ -1,95 +1,72 @@
-1. نظرة عامة على المشروع
-نظام إدارة الموظفين هو تطبيق C# يُطبّق مبادئ البرمجة الغرضية التوجه (OOP) بشكل كامل. يدير النظام أنواعاً مختلفة من الموظفين (مدير، مطور، متدرب) ضمن أقسام، مع تطبيق جميع المبادئ المطلوبة: التجريد، الوراثة، تعدد الأشكال، التغليف، التفويض، الأحداث، والفئات الساكنة.
+تُعد البرمجة الغرضية التوجه (OOP) الركيزة الأساسية في تطوير البرمجيات الحديثة، حيث تتيح بناء أنظمة معقدة تتميز بالمرونة وقابلية التوسع وإعادة الاستخدام. يأتي هذا المشروع، المطور بلغة C# ضمن ملف "Program.cs"، كنموذج تطبيقي حي لهذه المبادئ من خلال بناء "نظام إدارة الموظفين" (Employee Management System). 
+يهدف التطبيق إلى محاكاة بيئة عمل حقيقية يتم فيها إدارة فئات متنوعة من الموظفين داخل الأقسام المؤسسية، مع التركيز على أتمتة العمليات الحسابية والرقابية مثل حساب الرواتب والتحقق من صحة البيانات وإصدار التنبيهات الذكية. تم تصميم الكود ليكون مثالاً نموذجياً لكيفية تحويل المتطلبات الإدارية إلى هيكلية برمجية متماسكة تعتمد على التجريد والتغليف وتعدد الأشكال. 
 
-2. مبادئ OOP المطبّقة
-2.1 التجريد (Abstraction)
-تم تطبيق التجريد من خلال واجهة (Interface) وفئة مجردة (Abstract Class):
 
-الوصف	الاسم	العنصر
-تحدد 3 عمليات أساسية: CalculateSalary(), DisplayInfo(), Work()	IEmployeeActions	Interface
-تطبق IEmployeeActions وتحتوي على خصائص مشتركة	Employee	Abstract Class
-كل فئة فرعية تحسب الراتب بطريقتها	CalculateSalary()	دالة مجردة
-كل فئة فرعية تنفذ عملها بطريقتها	Work()	دالة مجردة
+شرح عن التطبيق:
+يقوم التطبيق المنفذ في "Program.cs" بإدارة الهيكل الوظيفي لشركة تقنية، ويتلخص عمله في النقاط التالية:
+1. الهيكل التنظيمي (Structural Hierarchy)blueprint الموظف: يعتمد النظام على فئة مجردة (Employee) تعمل كقاعدة أساسية لجميع أنواع الموظفين، مما يضمن وجود خصائص مشتركة مثل الاسم، العمر، والراتب الأساسي. 
+•	تخصيص الأدوار: يتيح النظام إنشاء أنواع محددة من الموظفين عبر الوراثة، وهم (المدير Manager والمطور Developer والمتدرب Intern). 
+•	إدارة الأقسام: توفر فئة Department وعاءً تنظيمياً يجمع الموظفين ويسمح بمعالجتهم ككتلة واحدة باستخدام قوائم ديناميكية (List<Employee>). 
+2. العمليات الوظيفية (Core Operations)
+•	حساب الرواتب الديناميكي: يمتلك التطبيق قدرة على حساب الراتب بشكل مختلف لكل فئة؛ فالمدير يضاف له حافز (Bonus)، والمطور يُحسب راتبه بناءً على ساعات العمل ومعدل الأجر بالساعة، بينما يتقاضى المتدرب راتباً ثابتاً. 
+•	نظام التحقق من البيانات: يتضمن التطبيق فئة ساكنة DataValidator تعمل كرقيب على البيانات المدخلة، حيث تمنع إدخال أسماء غير صالحة أو أعمار خارج النطاق القانوني (18-65 عاماً). 
 
-2.2 الوراثة وتعدد الأشكال (Inheritance & Polymorphism)
-ثلاث فئات فرعية ترث من الفئة المجردة Employee، كل منها تعيد تعريف الدوال المجردة بطريقتها الخاصة. فئة Department تحتوي على List<Employee> وتعالج جميع الموظفين بنفس الكود، مما يظهر تعدد الأشكال في وقت التشغيل.
+•	تتبع الإحصائيات العامة: يقوم النظام آلياً بتحديث إحصائيات إجمالية تشمل العدد الكلي للموظفين وإجمالي ميزانية الرواتب في الشركة عبر خصائص ساكنة (Static Properties). 
+3. الرقابة والتنبيهات (Monitoring & Alerts)
+•	نظام التنبيه الذكي: يستخدم التطبيق "التفويضات والأحداث" (Delegates & Events) لمراقبة الرواتب العالية. بمجرد أن يتجاوز راتب أي موظف سقف 10,000$، يقوم النظام تلقائياً بإطلاق حدث تنبيهي يظهر للمسؤول في شاشة التحكم. 
+4. عرض النتائج (Reporting)
+•	عند تشغيل البرنامج في "Program.cs"، يقوم بإنشاء قسم تقني (Technology Department)، ويضيف إليه موظفين من مختلف الفئات، ثم يستعرض مهام كل موظف وبياناته المالية بوضوح، مما يظهر قوة "تعدد الأشكال" (Polymorphism) في التعامل مع كائنات مختلفة عبر واجهة برمجية موحدة. 
 
-سلوك Work()	حساب الراتب	ترث من	الفئة
-إدارة الفريق واتخاذ القرارات	BaseSalary + Bonus	Employee	Manager
-كتابة الكود وتطوير البرمجيات	HoursWorked * HourlyRate	Employee	Developer
-التعلم والمساعدة في القسم	BaseSalary (المكافأة)	Employee	Intern
 
-مثال على تعدد الأشكال — فئة Department تكرر على List<Employee> وتستدعي Work() وDisplayInfo() وCheckSalary() على كل كائن، ويتم تنفيذ النسخة الصحيحة تلقائياً حسب النوع الفعلي.
 
-2.3 التغليف (Encapsulation)
-جميع الحقول في الفئة Employee والفئات الفرعية معرّفة كـ private مع بادئة _ (مثل: _name, _age, _baseSalary). الوصول يتم عبر Properties مع منطق تحقق.
+مبادئ OOP الأربعة في الكود:
 
-التحقق	نوع الوصول	الخاصية	الحقل
-غير فارغ، طول >= 2	للقراءة فقط خارجياً	Name { get; private set; }	_name
-بين 18 و 65	للقراءة فقط خارجياً	Age { get; private set; }	_age
-يجب أن يكون > 0	protected write	BaseSalary { get; protected set; }	_baseSalary
-لا يتغير بعد الإنشاء	للقراءة فقط (غير قابل للتعديل)	Id { get; private set; }	(auto)
+1. التجريد (Abstraction)
+يتمثل في فصل "ماذا يفعل الكائن" عن "كيفية القيام به".
+•	IEmployeeActions واجهة – (Interface): تحدد العمليات الأساسية التي يجب أن يقوم بها أي موظف (CalculateSalary, DisplayInfo, Work) دون الدخول في تفاصيل التنفيذ.
+•	Employee فئة مجردة – (Abstract Class): لا يمكنك إنشاء كائن (Object) مباشرة من Employee لأنه مجرد نموذج عام.
+•	الدوال المجردة: الدالتان CalculateSalary() و Work() تم تعريفهما كـ abstract داخل فئة الموظف، مما يجبر الفئات الوارثة على تقديم التنفيذ الخاص بها.
 
-2.4 التفويض والأحداث (Delegates & Events)
-تم تعريف delegate باسم SalaryAlertHandler داخل فئة Employee. عند استدعاء CheckSalary() وكان الراتب أكبر من 10,000 $، يُطلق الحدث OnHighSalary ويتم استدعاء الدالة المشتركة HandleHighSalaryAlert() التي تطبع تنبيهاً ملوناً.
 
-الدور	الاسم	العنصر
-يحدد التوقيع: (string name, double salary)	SalaryAlertHandler	Delegate
-يُطلق عندما يكون الراتب > 10,000 $	OnHighSalary	Event
-يطبع تنبيهاً أصفر في الـ Console	HandleHighSalaryAlert()	دالة المعالجة
-تحسب الراتب وتطلق الحدث إذا لزم	CheckSalary()	دالة التشغيل
+. التغليف (Encapsulation)
+يتمثل في حماية البيانات ومنع الوصول المباشر إليها إلا من خلال وسيط (Properties).
+•	الحقول الخاصة (Private Fields): مثل _name, _age, _baseSalary. لا يمكن الوصول إليها من خارج الفئة.
+•	الخصائص (Properties): مثل Name, Age, BaseSalary. تلاحظ وجود منطق برمجي (Logic) داخل الـ set للتأكد من صحة البيانات باستخدام الفئة DataValidator.
+•	الوصول المقيد: الخاصية Id لها private set مما يجعلها "للقراءة فقط" من الخارج بعد تعيينها في المنشئ (Constructor).
 
-2.5 الفئات الساكنة (Static Classes & Members)
-الفئة الساكنة DataValidator توفر دوال تحقق بدون الحاجة لإنشاء كائنات منها. كما تحتوي فئة Employee على خاصيتين ساكنتين لتتبع الحالة العامة لجميع الكائنات.
 
-الغرض	الاسم	الفئة	النوع
-التحقق من Name, Age, Salary, Hours	DataValidator	DataValidator	Static Class
-يتحقق أن الاسم غير فارغ وطوله >= 2	IsValidName(string)	DataValidator	Static Method
-يتحقق أن العمر بين 18 و 65	IsValidAge(int)	DataValidator	Static Method
-يتحقق أن الراتب > 0	IsValidSalary(double)	DataValidator	Static Method
-يحسب عدد الموظفين المنشأين	Count { get; private set; }	Employee	Static Property
-يجمع مجموع رواتب كل الموظفين	TotalSalaryBudget { get; private set; }	Employee	Static Property
 
-3. مخطط UML
-يوضح المخطط التالي العلاقات بين جميع الفئات في النظام:
+. الوراثة (Inheritance)
+تسمح لفئة بأن ترث الخصائص والدوال من فئة أخرى لتجنب تكرار الكود.
+•	الفئات التابعة: Manager, Developer, و Intern جميعها ترث من الفئة الأساسية Employee.
+•	إعادة الاستخدام: جميع هذه الفئات حصلت تلقائياً على خصائص الاسم والعمر والـ ID ودالة DisplayInfo() دون الحاجة لإعادة كتابتها.
 
-<<interface>>  IEmployeeActions
-+ CalculateSalary() : double
-+ DisplayInfo() : void
-+ Work() : void
-         |  implements
-         v
-<<abstract>>  Employee
-- _id, _name, _age, _baseSalary  [private]
-+ Id { get; private set; }  [read-only]
-+ Name, Age, BaseSalary  [Properties]
-+ Count : int  [static]
-+ TotalSalaryBudget : double  [static]
-+ OnHighSalary : event SalaryAlertHandler
-+ CalculateSalary()  [abstract]
-+ Work()  [abstract]
-+ DisplayInfo(), CheckSalary()
-    |           |           |
-    v           v           v
- Manager    Developer    Intern
- +Bonus     +HoursWorked +Department
- +Calc..()  +HourlyRate  +Calc...()
- +Work()    +Calc...()   +Work()
-            +Work()
 
- Department                  DataValidator <<static>>
- -_employees:List<Employee>  +IsValidName(string):bool
- +AddEmployee(Employee)      +IsValidAge(int):bool
- +ShowAllEmployees()         +IsValidSalary(double):bool
 
-4. شرح التفويض والأحداث — الدور العملي
-يعمل التفويض والحدث كآلية إشعار بين الفئات دون ربط مباشر بينها. إليك خطوات التنفيذ:
+. تعدد الأشكال (Polymorphism)
+يسمح للكائنات المختلفة بأن تُعامل كنوع واحد، ولكن كل كائن يستجيب بطريقته الخاصة.
+•	الكلمة المفتاحية override: تم استخدامها في Manager, Developer, و Intern لإعادة تعريف دالتي CalculateSalary() و Work().
+•	التطبيق العملي: في فئة Department وبالتحديد في دالة ShowAllEmployees()، يتم التعامل مع قائمة من نوع List<Employee>. عندما نستدعي emp.Work()، يقوم البرنامج بتنفيذ نسخة الدالة الخاصة بنوع الموظف الفعلي المدير يطبع "managing"، والمطور يطبع ("writing code").
 
-الإجراء	الخطوة
-تعريف delegate باسم SalaryAlertHandler بمعاملين: اسم الموظف والراتب	1. التعريف
-إعلان حدث OnHighSalary من نوع SalaryAlertHandler في فئة Employee	2. الإعلان
-في Main()، كل موظف يشترك: m1.OnHighSalary += HandleHighSalaryAlert	3. الاشتراك
-عند استدعاء CheckSalary()، إذا كان الراتب > 10,000 $ يُطلق الحدث	4. التشغيل
-تنفيذ HandleHighSalaryAlert() وطباعة تنبيه أصفر على الـ Console	5. المعالجة
 
-الفائدة العملية: فئة Employee لا تحتاج أن تعرف من سيتعامل مع التنبيه. أي دالة تطابق توقيع الـ delegate يمكنها الاشتراك، مما يجعل التصميم مرناً وغير مترابط.
+
+
+
+شرح دور التفويض (Delegates) والأحداث  : (Events)
+
+تستخدم هذه الأدوات لتطبيق نمط "المراقب" (Observer Pattern)، وهو باختصار وسيلة لإخبار أجزاء أخرى من البرنامج بحدوث شيء معين.
+1. التفويض (Delegate): SalaryAlertHandler
+دوره: هو "عقد" أو "توقيع" يحدد شكل الدالة التي يمكنها التعامل مع التنبيه. هو يقول: "أي دالة تريد استقبال تنبيه الراتب العالي يجب أن تأخذ نصاً (اسم الموظف) ورقماً (الراتب)".
+2. الحدث (Event): OnHighSalary
+•	دوره: هو الوسيلة التي يرسل بها الكائن إشارة عند تحقق شرط معين. في الكود، يتم إطلاق هذا الحدث داخل دالة CheckSalary() إذا تجاوز الراتب 10,000.
+•	الاشتراك (Subscription): في دالة Main تلاحظ السطر m1.OnHighSalary += HandleHighSalaryAlert. هنا قمنا بربط الحدث بالدالة التي ستعالجه.
+
+
+
+الأعضاء الساكنة (Static Members) :
+
+ :  Employee.Count: خاصية ساكنة تُستخدم لحساب عدد الموظفين الكلي في النظام، وهي مشتركة بين كل الكائنات وليست خاصة بموظف واحد.
+ :  DataValidator: فئة ساكنة بالكامل (Static Class)، لا نحتاج لإنشاء كائن منها. تُستخدم كأداة مساعدة (Utility) للتحقق من صحة البيانات في أي مكان بالكود.
+
+
+
