@@ -111,113 +111,154 @@ namespace ipg203
                 TotalSalaryBudget += emp.CalculateSalary();
             }
         }
-    
-// ============================================================
-    // 3. INHERITANCE & POLYMORPHISM - Subclasses
-    // ============================================================
 
-    // Manager class
-    public class Manager : Employee
-    {
-        private double _bonus;
+        // ============================================================
+        // 3. INHERITANCE & POLYMORPHISM - Subclasses
+        // ============================================================
 
-        public double Bonus
+        // Manager class
+        public class Manager : Employee
         {
-            get { return _bonus; }
-            private set
+            private double _bonus;
+
+            public double Bonus
             {
-                if (value < 0) throw new ArgumentException("Bonus cannot be negative!");
-                _bonus = value;
+                get { return _bonus; }
+                private set
+                {
+                    if (value < 0) throw new ArgumentException("Bonus cannot be negative!");
+                    _bonus = value;
+                }
+            }
+
+            public Manager(int id, string name, int age, double baseSalary, double bonus)
+                : base(id, name, age, baseSalary)
+            {
+                Bonus = bonus;
+            }
+
+            public override double CalculateSalary()
+            {
+                return BaseSalary + Bonus;
+            }
+
+            public override void Work()
+            {
+                Console.WriteLine($"  {Name} is managing the team and making strategic decisions.");
             }
         }
 
-        public Manager(int id, string name, int age, double baseSalary, double bonus)
-            : base(id, name, age, baseSalary)
+        // Developer class
+        public class Developer : Employee
         {
-            Bonus = bonus;
-        }
+            private int _hoursWorked;
+            private double _hourlyRate;
 
-        public override double CalculateSalary()
-        {
-            return BaseSalary + Bonus;
-        }
-
-        public override void Work()
-        {
-            Console.WriteLine($"  {Name} is managing the team and making strategic decisions.");
-        }
-    }
-
-    // Developer class
-    public class Developer : Employee
-    {
-        private int _hoursWorked;
-        private double _hourlyRate;
-
-        public int HoursWorked
-        {
-            get { return _hoursWorked; }
-            private set
+            public int HoursWorked
             {
-                // FIX: Now actually uses IsValidHours() from DataValidator (was dead code before)
-                if (!DataValidator.IsValidHours(value))
-                    throw new ArgumentException("Hours must be between 1 and 744!");
-                _hoursWorked = value;
+                get { return _hoursWorked; }
+                private set
+                {
+                    // FIX: Now actually uses IsValidHours() from DataValidator (was dead code before)
+                    if (!DataValidator.IsValidHours(value))
+                        throw new ArgumentException("Hours must be between 1 and 744!");
+                    _hoursWorked = value;
+                }
+            }
+
+            public double HourlyRate
+            {
+                get { return _hourlyRate; }
+                private set
+                {
+                    if (value <= 0) throw new ArgumentException("Hourly rate must be greater than zero!");
+                    _hourlyRate = value;
+                }
+            }
+
+            // Removed the redundant hoursWorked * hourlyRate from base() call.
+            // BaseSalary is set to hourlyRate only as a base reference,
+            // and the actual salary is always calculated via CalculateSalary().
+            public Developer(int id, string name, int age, int hoursWorked, double hourlyRate)
+                : base(id, name, age, hourlyRate)
+            {
+                HoursWorked = hoursWorked;
+                HourlyRate = hourlyRate;
+            }
+
+            public override double CalculateSalary()
+            {
+                return HoursWorked * HourlyRate;
+            }
+
+            public override void Work()
+            {
+                Console.WriteLine($"  {Name} is writing code and developing software.");
             }
         }
 
-        public double HourlyRate
+        // Intern class
+        public class Intern : Employee
         {
-            get { return _hourlyRate; }
-            private set
+            // Read-only property - set internally
+            public string Department { get; private set; }
+
+            public Intern(int id, string name, int age, double stipend, string department)
+                : base(id, name, age, stipend)
             {
-                if (value <= 0) throw new ArgumentException("Hourly rate must be greater than zero!");
-                _hourlyRate = value;
+                Department = department;
+            }
+
+            public override double CalculateSalary()
+            {
+                return BaseSalary;
+            }
+
+            public override void Work()
+            {
+                Console.WriteLine($"  {Name} is learning and assisting in the {Department} department.");
+            }
+        }
+        // ============================================================
+        // 4. Department class - shows Polymorphism with List
+        // ============================================================
+        public class Department
+        {
+            private List<Employee> _employees;
+            public string DepartmentName { get; private set; }
+
+            public Department(string name)
+            {
+                DepartmentName = name;
+                _employees = new List<Employee>();
+            }
+
+            public void AddEmployee(Employee emp)
+            {
+                _employees.Add(emp);
+            }
+
+            // Returns the internal list for external use (e.g., budget calculation)
+            public List<Employee> GetEmployees()
+            {
+                return _employees;
+            }
+
+            // Polymorphism: same method behaves differently for each employee
+            public void ShowAllEmployees()
+            {
+                Console.WriteLine($"\n========== Department: {DepartmentName} ==========");
+                foreach (var emp in _employees)
+                {
+                    emp.Work();
+                    emp.DisplayInfo();
+                    emp.CheckSalary(); // FIX: no longer adds to budget here
+                    Console.WriteLine("  ----------------------------");
+                }
             }
         }
 
-        // Removed the redundant hoursWorked * hourlyRate from base() call.
-        // BaseSalary is set to hourlyRate only as a base reference,
-        // and the actual salary is always calculated via CalculateSalary().
-        public Developer(int id, string name, int age, int hoursWorked, double hourlyRate)
-            : base(id, name, age, hourlyRate)
-        {
-            HoursWorked = hoursWorked;
-            HourlyRate = hourlyRate;
-        }
-
-        public override double CalculateSalary()
-        {
-            return HoursWorked * HourlyRate;
-        }
-
-        public override void Work()
-        {
-            Console.WriteLine($"  {Name} is writing code and developing software.");
-        }
     }
-
-    // Intern class
-    public class Intern : Employee
-    {
-        // Read-only property - set internally
-        public string Department { get; private set; }
-
-        public Intern(int id, string name, int age, double stipend, string department)
-            : base(id, name, age, stipend)
-        {
-            Department = department;
-        }
-
-        public override double CalculateSalary()
-        {
-            return BaseSalary;
-        }
-
-        public override void Work()
-        {
-            Console.WriteLine($"  {Name} is learning and assisting in the {Department} department.");
-        }
-    }
+}
 
 
